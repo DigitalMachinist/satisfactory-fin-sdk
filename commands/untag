@@ -1,0 +1,26 @@
+#!/bin/bash
+
+###################################################################################################
+# untag
+#
+# Remove a tag from one or more drives.
+#
+# You may use tags for whatever purpose you like. They are a freeform system to let you group
+# your drives and more easily look up sets of drives that share things in common.
+###################################################################################################
+
+COMMAND_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "$COMMAND_PATH/../config"
+
+if [ -z "$2" ]; then
+    important "Missing arguments!\nUsage: $0 <tag> <drive_uuid> [<drive_uuid>]...\n";
+    exit 1
+fi
+
+for DRIVE in "${@:2}"
+do
+    rm -I "$DRIVES_PATH/$DRIVE/tags/$1" >/dev/null 2>&1
+    printf "Removed tag ${CYAN}$1${NC} from drive ${RED}$DRIVE${NC}!\n"
+done
+
+important "\nDone!\n"

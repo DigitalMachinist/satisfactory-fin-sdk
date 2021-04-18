@@ -1,0 +1,54 @@
+#!/bin/bash
+
+###################################################################################################
+# push
+#
+# Install the current FIN SDK /drives folder to your Satisfactory FIN computers folder. This makes
+# any file changes to these drives available ingame immediately.
+#
+# *IMPORTANT* You must restart any FIN comupters ingame to start executing new code.
+#
+# This command will back up your existing FIN computers folder every time it is run just in case
+# something important gets overwritten.
+###################################################################################################
+
+COMMAND_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "$COMMAND_PATH/../config"
+
+# Copy current Satisfactory FIN computer folder into a backup folder in case anything breaks.
+TIMESTAMP=`date +%Y-%m-%d_%H-%M-%S`
+BACKUP_PATH="$BACKUPS_PATH/$TIMESTAMP"
+if [ ! -d "$BACKUP_PATH" ]; then
+    mkdir "$BACKUP_PATH"
+fi
+cp -rf "$FIN_COMPUTERS_PATH" "$BACKUP_PATH"
+printf "Backed up Satisfactory FIN computers folder to:\n"
+printf "  ╰──▶ ${GREEN}$BACKUP_PATH${NC}\n\n"
+
+# Copy the contents of all /data folders from drives in Satisfactory.
+# This is essential to make sure data files are current to the current in-game state!
+#
+# YES, IT IS CORRECT THAT --no-clobber SEEMS BACKWARDS! If --no-clobber is set for push, we want
+# to allow discover to overwrite our drive data before we overwrite drives at the destination.
+# This results in the destination files being the same as they were (with a very small time gap).
+# This could be improved to avoid this weird dance! TODO.
+#
+if [ "$1" == "--no-clobber" ]; then
+    "$COMMANDS_PATH/discover" >/dev/null 2&>1
+else
+    "$COMMANDS_PATH/discover --no-clobber" >/dev/null 2&>1
+fi
+
+# Delete the existing computer configuration.
+printf "Cleaning Satisfactory FIN computers folder...\n\n"
+cd "$FIN_COMPUTERS_PATH"
+find . -mindepth 1 -name \* -delete
+
+# Publish the repo drives into the Satisfactory folder.
+cp -rf $DRIVES_PATH/* "$FIN_COMPUTERS_PATH"
+printf "Published drives to Satisfactory FIN computers folder:\n"
+printf "  ╰──▶ ${GREEN}$FIN_COMPUTERS_PATH${NC}\n\n"
+
+cd $PWD
+
+echo "Done!"

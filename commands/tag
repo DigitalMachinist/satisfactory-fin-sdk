@@ -1,0 +1,26 @@
+#!/bin/bash
+
+###################################################################################################
+# tag
+#
+# Tag one or more drives with an identifier so they can be looked up later.
+#
+# You may use tags for whatever purpose you like. They are a freeform system to let you group
+# your drives and more easily look up sets of drives that share things in common.
+###################################################################################################
+
+COMMAND_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "$COMMAND_PATH/../config"
+
+if [ -z "$2" ]; then
+    important "Missing arguments!\nUsage: $0 <tag> <drive_uuid> [<drive_uuid>]...\n";
+    exit 1
+fi
+
+for DRIVE in "${@:2}"
+do
+    touch "$DRIVES_PATH/$DRIVE/tags/$1"
+    printf "Tagged drive ${RED}$DRIVE${NC} as ${CYAN}$1${NC}!\n"
+done
+
+important "\nDone!\n"

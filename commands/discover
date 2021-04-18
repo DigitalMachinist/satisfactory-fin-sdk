@@ -1,0 +1,46 @@
+#!/bin/bash
+
+###################################################################################################
+# discover
+#
+# Iterate ove any drives found in your Satisfactory FIN computers folder and creating these drives
+# in your /drives folder if they don't already exist. Existing drives will have the contents of
+# their /data folder updated but will otherwise be unchanged.
+#
+# This will *only* overwrite the contents of each drive's /data folder. It does this to ensure
+# that any persistent data saved to each drive during gameplay will be preserved.
+# Everything else should be code.
+###################################################################################################
+
+COMMAND_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "$COMMAND_PATH/../config"
+
+# Discover drives from FIN computers folder.
+printf "Discovering drives from:\n"
+printf "  ╰──▶ ${GREEN}$FIN_COMPUTERS_PATH${NC}\n\n"
+cd "$FIN_COMPUTERS_PATH"
+DRIVES="$( find . -mindepth 1 -maxdepth 1 -type d | sort -u | cut -c3-34 )"
+for DRIVE in $DRIVES
+do
+    DRIVE_PATH="$DRIVES_PATH/$DRIVE"
+    if [ -d "$DRIVE_PATH" ]; then
+        printf "Found existing drive ${RED}$DRIVE${NC}.\n"
+    else
+        printf "Discovered new drive ${GREEN}$DRIVE${NC}!\n"
+        mkdir "$DRIVE_PATH" >/dev/null 2>&1
+    fi
+    mkdir "$DRIVE_PATH/tags" >/dev/null 2>&1
+    touch "$DRIVE_PATH/tags/.gitkeep"
+    mkdir "$DRIVE_PATH/data" >/dev/null 2>&1
+    touch "$DRIVE_PATH/data/.gitkeep"
+    if [ "$1" == "--no-clobber" ]; then
+        cp -rf --no-clobber "$DRIVE/data/*" "$DRIVE_PATH/data" >/dev/null 2>&1
+    else
+        cp -rf "$DRIVE/data/*" "$DRIVE_PATH/data" >/dev/null 2>&1
+    fi
+done
+printf "\n"
+
+cd $PWD
+
+important "Done!\n"

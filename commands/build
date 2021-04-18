@@ -1,0 +1,66 @@
+#!/bin/bash
+
+###################################################################################################
+# build
+#
+# Compile the app, libraries and EEPROM files for the given app and update all drives that the app
+# is applied to with the latest build of the code files.
+#
+# This will overwrite code files for all drives the app is applied to. Additionally, the eeprom.lua
+# template taken from the root folder of the project will automatically have the drive's UUID set
+# as the primary drive alias to make it bootable as the app code.
+###################################################################################################
+
+COMMAND_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "$COMMAND_PATH/../config"
+
+# This is the string to find and replace in eeprom.lua with each drive's UUID.
+UUID_REPLACE="__DRIVE_UUID__"
+
+if [ -z "$1" ]; then
+    important "Argument 'app_name' is required!\nUsage: $0 <app_name>\n";
+    exit 1
+fi
+
+APP=$1
+APP_PATH="$APPS_PATH/$APP"
+printf "Building drives from template ${GREEN}$APP${NC}:\n"
+printf "  ╰──▶ ${GREEN}$APP_PATH${NC}\n\n"
+
+# Find all drives the app is applied to and update their files from the current app, library & EEPROM files.
+cd "$APP_DRIVES_PATH/$APP"
+DRIVES="$( find . -mindepth 1 -maxdepth 1 | sort -u | cut -c3-34 )"
+for DRIVE in $DRIVES
+do
+    DRIVE_PATH="$DRIVES_PATH/$DRIVE"
+    printf "Building app ${GREEN}$APP${NC} to drive ${RED}$DRIVE${NC}!\n"
+    printf "  ╰──▶ ${GREEN}$DRIVE_PATH${NC}\n"
+
+    # Delete all files/folders on the drive, except those that need to remain unchanged.
+    find "./$DRIVE" -mindepth 1 \( ! -path "*/data*" ! -path "*/drive.lua" ! -path "*/.app" \) -delete # Delete everything but a few files.
+
+    # Copy all files in the top-level app folder.
+    find "$APP_PATH" -mindepth 1 -maxdepth 1 -type f -exec cp {} -f "$DRIVE_PATH" \;
+
+    # Copy all folders in the app, except the data folder.
+    find "$APP_PATH" -mindepth 1 -maxdepth 1 -type d \( ! -path "*/data*" \) -exec cp {} -rf "$DRIVE_PATH" \;
+
+    # Copy files from the data folder but *DO NOT OVERWRITE THE DESTINATION*.
+    cp -rf --no-clobber "$APP_PATH/data" "$DRIVE_PATH"
+
+    # Create drive.lua from a template if it doesn't exist, but don't overwrite if it exists.
+    cp -f --no-clobber "$FIN_SDK_PATH/.sdk/templates/drive.lua" "$DRIVE_PATH/drive.lua"
+
+    # Copy in the libs folder from the top-level of the project.
+    cp -rf "$LIBS_PATH" "$DRIVE_PATH"
+
+    # Copy eeprom.lua from the top-level of the project.
+    cp "$EEPROM_PATH" "$DRIVE_PATH"
+
+    # Find and replace the drive UUID in the EEPROM file to make it bootable EEPROM code.
+    sed -i s/$UUID_REPLACE/$DRIVE/ "$DRIVE_PATH/eeprom.lua"
+done
+
+cd $PWD
+
+important "\nDone!\n"
