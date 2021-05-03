@@ -1,13 +1,13 @@
 #!/bin/bash
 
 ###################################################################################################
-# newapp
+# createapp
 #
 # Create a new skeleton app with the given name.
 #
 # This command won't run if the app you're trying to create already exists. You'll need to delete
-# that one manually first before you can create a new one with that name. This is just a little
-# safety feature to make certain you don't overwrite any of your apps by accident.
+# that one first before you can create a new one with that name. This is just a safety feature to
+# make certain you don't overwrite any of your apps by accident.
 ###################################################################################################
 
 COMMAND_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"

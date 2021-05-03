@@ -91,23 +91,23 @@ A new drive folder should have appeared in your `drives` folder now:
 
 ## [Creating an app](#creating-an-app)
 
-To create a new app, run the `newapp` command. This creates a new app from a template that you can edit to do whatever you please. New apps are created into the `apps` folder of your FIN code project.
+To create a new app, run the `createapp` command. This creates a new app from a template that you can edit to do whatever you please. New apps are created into the `apps` folder of your FIN code project.
 
 ```bash
-./newapp my_app
+./createapp my_app
 ```
 
-![newapp](./media/newapp_01.png "newapp")
+![createapp](./media/createapp_01.png "createapp")
 
 Let's take a quick look at what `my_app` contains:
 
-![my_app contents](./media/newapp_02.png "my_app contents")
+![my_app contents](./media/createapp_02.png "my_app contents")
 
-`app.lua` is the entrypoint of your app and is where any Lua code you write should go. For a deeper dive, read the [anatomy of an app](anatomy_of_an_app.md) after you're finished with this.
+`app.lua` is the entrypoint of your app and is where any Lua code you write should go. We can ignore the `data` folder for now, but for more information read the [anatomy of an app](anatomy_of_an_app.md) after you're finished with this.
 
-We should also take a look at what `app.lua` does:
+We should take a look at what `app.lua` does:
 
-![default app.lua](./media/newapp_01.png "default app.lua")
+![default app.lua](./media/createapp_03.png "default app.lua")
 
 `app.lua` defines the `App()` function and immediately calls it. When `app.lua` is run by the bootloader, `App()` will run any code you write here.
 

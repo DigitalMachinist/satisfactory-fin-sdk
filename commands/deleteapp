@@ -1,0 +1,62 @@
+#!/bin/bash
+
+###################################################################################################
+# deleteapp
+#
+# Delete an app (unapplying the app from any drives in the process). The app files will remain on
+# any drives to which the app was applied.
+###################################################################################################
+
+COMMAND_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "$COMMAND_PATH/../config"
+
+if [ -z "$1" ]; then
+    important "Missing arguments!\nUsage: $0 <app_name>\n";
+    exit 1
+fi
+
+APP=$1
+APP_PATH="$APPS_PATH/$APP"
+if [ ! -d "$APP_PATH" ]; then
+    important "App ${GREEN}$APP${YELLOW} doesn't exist!\n"
+    exit 2
+fi
+
+printf "This will permanently delete app ${GREEN}$APP${NC}!\n"
+printf "  ╰──▶ ${GREEN}$APP_PATH${NC}\n\n"
+printf "Are you sure? [y/n] "
+read -n 1 -r
+if [ $REPLY != "y" ]; then
+   important "\n\nAborted.\n"
+   exit 3
+fi
+echo
+
+DRIVES=$( ./findtag my_app | grep Drive | awk '{ print $3 }' | cut -c8-39 )
+if [ ! -z "$DRIVES" ]; then
+    printf "\nThis app is still applied to the following drives:\n"
+    printf "${RED}$DRIVES${NC}\n\n"
+    printf "Unapply the app and continue? [y/n] "
+    read -n 1 -r
+    if [ $REPLY != "y" ]; then
+        important "\n\nAborted.\n"
+        exit 4
+    fi
+
+    # The unapply command prints "Done!" so we'll exit right here.
+    "$COMMANDS_PATH/unapply" $DRIVES >/dev/null 2>&1
+    important "\n\nApp unapplied from all drives.\n"
+    printf "  ╰──▶ ${RED}$DRIVES${NC}\n"
+fi
+
+if [ -d "$APP_DRIVES_PATH/$APP" ]; then
+    rmdir "$APP_DRIVES_PATH/$APP"
+    important "\nApp_drives folder deleted.\n"
+    printf "  ╰──▶ ${GREEN}$APP_DRIVES_PATH/$APP${NC}\n"
+fi
+
+rm -r "$APP_PATH"
+important "\nApp folder deleted.\n"
+printf "  ╰──▶ ${GREEN}$APP_PATH${NC}\n"
+
+important "\nDone!\n"

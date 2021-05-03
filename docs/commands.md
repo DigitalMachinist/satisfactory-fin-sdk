@@ -9,7 +9,7 @@
 - [clean](#clean)
 - [discover](#discover)
 - [findtag](#findtag)
-- [newapp](#newapp)
+- [createapp](#createapp)
 - [pull](#pull)
 - [push](#push)
 - [reapply](#reapply)
@@ -154,20 +154,20 @@ None
 
 ![finding a tag](./media/tag_01.png "finding a tag")
 
-## [newapp](#newapp)
+## [createapp](#createapp)
 
-The `newapp` command creates a new app in your FIN code project as a subfolder under the `apps` folder.
+The `createapp` command creates a new app in your FIN code project as a subfolder under the `apps` folder.
 
 The new app if created using the `.sdk/templates/app` folder as a template, so if you want your default app to contain specific code or files, you can edit that.that you can edit to do whatever you please. New apps are created into the `apps` folder of your FIN code project.
 
 For a deeper dive into the files and folders apps are made up of, see [the anatomy of an app](anatomy_of_an_app.md).
 
-[Source code](../commands/newapp)
+[Source code](../commands/createapp)
 
 ### Syntax
 
 ```bash
-./commands/newapp APP_NAME
+./commands/createapp APP_NAME
 ```
 
 ### Options
@@ -176,7 +176,7 @@ None
 
 ### Examples
 
-![newapp](./media/newapp_01.png "newapp")
+![createapp](./media/createapp_01.png "createapp")
 
 ## [pull](#pull)
 

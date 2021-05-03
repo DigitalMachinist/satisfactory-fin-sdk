@@ -59,6 +59,7 @@ This SDK should work fine in both of these terminals and probably other bash-for
 - [x] Add a flag to `push` to force overwrite data files
 - [x] Move library functions to namespaces
 - [x] Add comment docblocks to library functions
+- [ ] Get in-game screenshots once FIN works in Update 4
 - [ ] Include storage controller example
 - [ ] build all
 - [ ] build & push
