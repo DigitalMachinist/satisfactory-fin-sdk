@@ -7,9 +7,10 @@
 - [apply](#apply)
 - [build](#build)
 - [clean](#clean)
+- [createapp](#createapp)
+- [deleteapp](#deleteapp)
 - [discover](#discover)
 - [findtag](#findtag)
-- [createapp](#createapp)
 - [pull](#pull)
 - [push](#push)
 - [reapply](#reapply)
@@ -104,6 +105,56 @@ None
 
 ![cleaning backups](./media/clean_01.png "cleaning backups")
 
+## [createapp](#createapp)
+
+The `createapp` command creates a new app in your FIN code project as a subfolder under the `apps` folder.
+
+The new app is created using the contents of the `.sdk/templates/app` folder as a template, so if you want your default app to contain specific code or files, you can edit that.that you can edit to do whatever you please. New apps are created into the `apps` folder of your FIN code project.
+
+For a deeper dive into the files and folders apps are made up of, see [the anatomy of an app](anatomy_of_an_app.md).
+
+To delete an app, use the [`deleteapp`](#deleteapp) command.
+
+[Source code](../commands/createapp)
+
+### Syntax
+
+```bash
+./commands/createapp APP_NAME
+```
+
+### Options
+
+None
+
+### Examples
+
+![createapp](./media/createapp_01.png "createapp")
+
+## [deleteapp](#deleteapp)
+
+The `deleteapp` command deletes an existing app from your FIN code project, removing the app, the related `app_drives` folder, and unapplying the app from all drives to which it is still applied.
+
+You will be prompted for confirmation of this action as a protection against accidental deletion.
+
+To create an app, use the [`createapp`](#createapp) command.
+
+[Source code](../commands/deleteapp)
+
+### Syntax
+
+```bash
+./commands/deleteapp APP_NAME
+```
+
+### Options
+
+None
+
+### Examples
+
+![deleteapp](./media/deleteapp_01.png "deleteapp")
+
 ## [discover](#discover)
 
 ***This is a low-level command. There's not much of a reason to run it directly.***
@@ -153,30 +204,6 @@ None
 ### Examples
 
 ![finding a tag](./media/tag_01.png "finding a tag")
-
-## [createapp](#createapp)
-
-The `createapp` command creates a new app in your FIN code project as a subfolder under the `apps` folder.
-
-The new app if created using the `.sdk/templates/app` folder as a template, so if you want your default app to contain specific code or files, you can edit that.that you can edit to do whatever you please. New apps are created into the `apps` folder of your FIN code project.
-
-For a deeper dive into the files and folders apps are made up of, see [the anatomy of an app](anatomy_of_an_app.md).
-
-[Source code](../commands/createapp)
-
-### Syntax
-
-```bash
-./commands/createapp APP_NAME
-```
-
-### Options
-
-None
-
-### Examples
-
-![createapp](./media/createapp_01.png "createapp")
 
 ## [pull](#pull)
 
