@@ -1,0 +1,69 @@
+#!/bin/bash
+
+###################################################################################################
+# renameapp
+#
+# Rename an app (unapplying the app from any drives anjd reapplying them to the new app in the
+# process). The app files will remain on any drives to which the app was applied.
+###################################################################################################
+
+COMMAND_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "$COMMAND_PATH/../config"
+
+if [ -z "$2" ]; then
+    important "Missing arguments!\nUsage: $0 <old_app_name> <new_app_name>\n";
+    exit 1
+fi
+
+OLD_APP=$1
+OLD_APP_PATH="$APPS_PATH/$OLD_APP"
+if [ ! -d "$OLD_APP_PATH" ]; then
+    important "App ${GREEN}$OLD_APP${YELLOW} doesn't exist!\n"
+    exit 2
+fi
+
+NEW_APP=$2
+NEW_APP_PATH="$APPS_PATH/$NEW_APP"
+if [ -d "$NEW_APP_PATH" ]; then
+    important "App ${GREEN}$NEW_APP${YELLOW} already exists!\n"
+    exit 3
+fi
+
+printf "This will permanently rename app ${GREEN}$OLD_APP${NC} to ${GREEN}$NEW_APP${NC}!\n"
+printf "Are you sure? [y/n] "
+read -n 1 -r
+if [ $REPLY != "y" ]; then
+   important "\n\nAborted.\n"
+   exit 4
+fi
+echo
+
+DRIVES=$( ./findtag $OLD_APP | grep Drive | awk '{ print $3 }' | cut -c8-39 )
+if [ ! -z "$DRIVES" ]; then
+    printf "\nApp ${GREEN}$OLD_APP${NC} is applied to the following drives:\n"
+    printf "${RED}$DRIVES${NC}\n\n"
+    printf "Apply ${GREEN}$NEW_APP${NC} to these drives and continue? [y/n] "
+    read -n 1 -r
+    if [ $REPLY != "y" ]; then
+        important "\n\nAborted.\n"
+        exit 5
+    fi
+fi
+
+mv "$OLD_APP_PATH" "$NEW_APP_PATH"
+important "\n\nApp folder moved.\n"
+printf "  ╰──▶ ${GREEN}$OLD_APP_PATH${NC} ───▶ ${GREEN}$NEW_APP_PATH${NC}\n"
+
+if [ ! -z "$DRIVES" ]; then
+    "$COMMANDS_PATH/apply" $NEW_APP $DRIVES >/dev/null 2>&1
+    important "\nApp ${GREEN}$NEW_APP${YELLOW} applied to all ${GREEN}$OLD_APP${YELLOW} drives.\n"
+    printf "  ╰──▶ ${RED}$DRIVES${NC}\n"
+fi
+
+if [ -d "$APP_DRIVES_PATH/$OLD_APP" ]; then
+    rmdir "$APP_DRIVES_PATH/$OLD_APP"
+    important "\nOld app_drives folder deleted.\n"
+    printf "  ╰──▶ ${GREEN}$APP_DRIVES_PATH/$OLD_APP${NC}\n"
+fi
+
+important "\nDone!\n"

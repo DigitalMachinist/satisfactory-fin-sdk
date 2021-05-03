@@ -58,7 +58,7 @@ This SDK should work fine in both of these terminals and probably other bash-for
 - [x] Move library functions to namespaces
 - [x] Add comment docblocks to library functions
 - [x] Delete app command
-- [ ] Rename app command
+- [x] Rename app command
 - [ ] Build all apps in 1 step
 - [ ] Build & push in 1 step
 - [ ] Include storage controller example

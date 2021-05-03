@@ -14,6 +14,7 @@
 - [pull](#pull)
 - [push](#push)
 - [reapply](#reapply)
+- [renameapp](#renameapp)
 - [tag](#tag)
 - [unapply](#unapply)
 - [untag](#untag)
@@ -277,6 +278,30 @@ None
 ### Examples
 
 ![reapply](./media/reapply_01.png "reapply")
+
+## [renameapp](#renameapp)
+
+The `renameapp` command renames an existing app in your FIN code project, moving the app folder, the related `app_drives` folder, and applying the new app to all drives the old app was applied.
+
+This command is helpful when refactoring an app name, since you don't need to remember which drives an app was applied to (normally you'd have to apply the new app to the old app's drives manually) and it just saves a lot of manual steps that lead to mistakes.
+
+You will be prompted for confirmation of this action as a protection against accidental renaming.
+
+[Source code](../commands/renameapp)
+
+### Syntax
+
+```bash
+./commands/renameapp OLD_APP_NAME NEW_APP_NAME
+```
+
+### Options
+
+None
+
+### Examples
+
+![renameapp](./media/renameapp_01.png "renameapp")
 
 ## [tag](#tag)
 

@@ -32,7 +32,7 @@ if [ $REPLY != "y" ]; then
 fi
 echo
 
-DRIVES=$( ./findtag my_app | grep Drive | awk '{ print $3 }' | cut -c8-39 )
+DRIVES=$( ./findtag $APP | grep Drive | awk '{ print $3 }' | cut -c8-39 )
 if [ ! -z "$DRIVES" ]; then
     printf "\nThis app is still applied to the following drives:\n"
     printf "${RED}$DRIVES${NC}\n\n"
@@ -43,7 +43,6 @@ if [ ! -z "$DRIVES" ]; then
         exit 4
     fi
 
-    # The unapply command prints "Done!" so we'll exit right here.
     "$COMMANDS_PATH/unapply" $DRIVES >/dev/null 2>&1
     important "\n\nApp unapplied from all drives.\n"
     printf "  ╰──▶ ${RED}$DRIVES${NC}\n"
