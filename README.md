@@ -59,11 +59,11 @@ This SDK should work fine in both of these terminals and probably other bash-for
 - [x] Add a flag to `push` to force overwrite data files
 - [x] Move library functions to namespaces
 - [x] Add comment docblocks to library functions
+- [x] Delete app command
 - [ ] Get in-game screenshots once FIN works in Update 4
 - [ ] Include storage controller example
 - [ ] build all
 - [ ] build & push
-- [ ] remove app
 - [ ] rename app
 - [ ] Explain Satisfactory computers folder loads computers for current save file only and managing multiple save files is fun
 - [ ] Clean up `eeprom.lua`

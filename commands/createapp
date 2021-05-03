@@ -27,6 +27,7 @@ fi
 
 cp -rf "$FIN_SDK_PATH/.sdk/templates/app" "$APP_PATH"
 
-printf "Created new app ${GREEN}$1${NC}:\n"
+important "Created new app ${GREEN}$1${NC}:\n"
 printf "  ╰──▶ ${GREEN}$APP_PATH${NC}\n\n"
+
 important "Done!\n"
