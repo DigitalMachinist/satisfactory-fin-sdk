@@ -47,12 +47,10 @@ This SDK should work fine in both of these terminals and probably other bash-for
 
 ## Misc
 
-- Editor stuff?
-- VSCode extension recommendations?
-- Helpful but unnecessary commands
 - Pitfalls/gotchas?
   - No easy way to get drive UUIDs other than printing them from computers
 - Identifying the UUID of a drive using a computer
+- Explain Satisfactory computers folder loads computers for current save file only and managing multiple save files is fun
 
 ## Roadmap/Issues
 
@@ -60,16 +58,15 @@ This SDK should work fine in both of these terminals and probably other bash-for
 - [x] Move library functions to namespaces
 - [x] Add comment docblocks to library functions
 - [x] Delete app command
-- [ ] Get in-game screenshots once FIN works in Update 4
+- [ ] Rename app command
+- [ ] Build all apps in 1 step
+- [ ] Build & push in 1 step
 - [ ] Include storage controller example
-- [ ] build all
-- [ ] build & push
-- [ ] rename app
-- [ ] Explain Satisfactory computers folder loads computers for current save file only and managing multiple save files is fun
 - [ ] Clean up `eeprom.lua`
-- [ ] Compile EEPROM files into a single file? Same with app files? Is it possible to work out function order?
+- [ ] Refactor eeprom.lua into several files --> Compile EEPROM files into a single file on build?
 - [ ] Better handling of data --no-clobber (don't pull then delete then replace --> preserve data folders as they are instead)
-- [ ] Friendly drive names
+- [ ] Friendly drive names --> Big feature but probably very helpful...
 - [ ] EEPROM auto-update that doesn't suck
+- [ ] Get in-game screenshots once FIN works in Update 4
 
 This is a *very* rudimentary approach to building Lua applications, but its productive and it works for making things in FIN.
